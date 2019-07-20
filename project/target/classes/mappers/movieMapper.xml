@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.MovieMapper">
+	<select id="list" resultType="MovieVO">
+		select * from movie
+	</select>
+	
+	<select id="readMovie" resultType="MovieVO">
+		select * from movie where m_id = #{m_id}
+	</select>
+	
+	<delete id="removeMovie">
+		delete from movie where m_id = #{m_id}
+	</delete>
+	
+	<update id="updateMovie">
+		update movie set title =#{title}
+		where m_id = #{m_id}
+	</update>
+	
+	<insert id="registerMovie">
+		insert into movie (m_id,title,content) values
+		(SEQ_MOVIE_LIST.nextval,#{title},#{content})
+	</insert>
+</mapper>

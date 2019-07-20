@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.UserMapper">
+	<select id="selectUserById" resultType="CustomUserDetails">
+		select * from user_list where username = #{username}
+	</select>
+	
+	<select id="getUser" resultType="com.spring.domain.UserVO">
+		select * from user_list where username = #{username}
+	</select>
+	
+	<insert id="registerUser">
+		insert into user_list (username,password,enabled,authority,name) values
+		(#{username},#{password},'1','ROLE_USER',#{name})
+	</insert>
+</mapper>

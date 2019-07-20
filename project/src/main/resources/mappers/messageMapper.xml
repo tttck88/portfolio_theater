@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.MessageMapper">
+
+	<insert id="create">
+		insert into message (m_id, target_id, sender, message)
+		values (SEQ_MESSAGE.nextval, #{target_id}, #{sender}, #{message})
+	</insert>
+
+	<select id="readMessage" resultType="MessageVO">
+		select * from message where mid = #{m_id}
+	</select>
+
+	<update id="updateState">
+		update message set opendate = SYSDATE where m_id= #{m_id}
+	</update>
+
+</mapper>
+
+

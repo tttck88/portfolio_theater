@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.ScheduleMapper">
+
+	<select id="list" resultType="com.spring.domain.ScheduleVO">
+		select * from SCHEDULE
+		where m_id = #{m_id}
+	</select>
+
+	<!-- <insert id="insertTheater">
+	<![CDATA[
+		INSERT INTO THEATER (T_ID,NAME,PHONE,ADRESS,CONTENT,SCR_NUM,IMG1,IMG2,IMG3,IMG4,IMG5)
+		VALUES ((SELECT NVL(MAX(T_ID),0)+1 FROM THEATER),
+		       #{name}, #{phone}, #{adress}, #{content}, #{scr_num}, #{img1}, #{img2}, #{img3}, #{img4}, #{img5}) 
+	]]>
+	</insert>
+
+	<select id="getTheater" resultType="com.spring.domain.TheaterVO">
+		SELECT * FROM THEATER where T_ID = #{t_id}
+	</select>
+
+	<delete id="deleteTheater">
+		DELETE FROM THEATER
+		WHERE t_id = #{t_id}
+
+	</delete>
+
+	<update id="updateTheater">
+		UPDATE THEATER
+		SET NAME
+		= #{name}, PHONE = #{phone}, ADRESS = #{adress},
+		CONTENT = #{content},
+		SCR_NUM = #{scr_num},IMG1 = #{img1}, IMG2 =
+		#{img2}, IMG3 = #{img3},
+		IMG4 = #{img4}, IMG5 = #{img5} WHERE t_id = #{t_id}
+	</update> -->
+	
+</mapper>

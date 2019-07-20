@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.ReservationMapper">
+
+	<select id="getList_sch" resultType="com.spring.domain.ReservationVO">
+		select * from reservation
+		where sch_id = #{sch_id}
+	</select>
+	
+	<select id="getList_user" resultType="com.spring.domain.ReservationVO">
+		select * from reservation
+		where username = #{username}
+	</select>
+
+	<insert id="insertRes">
+	<![CDATA[
+		INSERT INTO RESERVATION (R_ID,USERNAME,SCH_ID,SEAT_ROW,SEAT_COL,R_DATE)
+		VALUES ((SELECT NVL(MAX(R_ID),0)+1 FROM RESERVATION), #{username}, #{sch_id}, #{seat_row}, #{seat_col}, #{r_date}) 
+	]]>
+	</insert>
+
+	<!-- <select id="getTheater" resultType="com.spring.domain.TheaterVO">
+		SELECT * FROM THEATER where T_ID = #{t_id}
+	</select>
+
+	<delete id="deleteTheater">
+		DELETE FROM THEATER
+		WHERE t_id = #{t_id}
+
+	</delete>
+
+	<update id="updateTheater">
+		UPDATE THEATER
+		SET NAME
+		= #{name}, PHONE = #{phone}, ADRESS = #{adress},
+		CONTENT = #{content},
+		SCR_NUM = #{scr_num},IMG1 = #{img1}, IMG2 =
+		#{img2}, IMG3 = #{img3},
+		IMG4 = #{img4}, IMG5 = #{img5} WHERE t_id = #{t_id}
+	</update> -->
+	
+</mapper>

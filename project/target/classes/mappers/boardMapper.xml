@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.mapper.BoardMapper">
+	<insert id="insertBoard">
+		insert into board (b_id,id,title,content,regdate) values
+		(SEQ_BOARD_NOTICE.nextval,#{id},#{title},#{content},SYSDATE)
+	</insert>
+	
+	<select id="selectBoard" resultType="com.spring.domain.BoardVO">
+		select * from board where b_id = #{b_id}
+	</select>
+	
+	<update id="updateBoard">
+		update board set title =#{title}, content =#{content}
+		where b_id = #{b_id}
+	</update>
+	
+	<update id="updateReplyCnt">
+		update board set replycnt = replycnt + #{amount} where b_id = #{b_id}
+	</update>
+	
+	<delete id="deleteBoard">
+		delete from board where b_id = #{b_id}
+	</delete>
+	
+	<select id="listAllBoard" resultType="com.spring.domain.BoardVO">
+	<![CDATA[
+	select 
+	  *
+	from 
+	  board 
+	where b_id > 0 
+	order by b_id desc, regdate desc
+	]]>
+	</select>
+	
+<!-- 	<select id="listPage" resultType="BoardVO">
+	 <![CDATA[
+		SELECT
+		    *
+		FROM
+		    (
+		        SELECT
+		            A.*,
+		            ROWNUM AS RNUM,
+		            COUNT(*) OVER() AS TOTCNT
+		        FROM
+		            (
+		                SELECT
+		                    *
+		                FROM
+		                    tbl_board
+		                ORDER BY
+		                    bno desc
+		             
+		            ) A
+		    )
+		WHERE
+		    RNUM > #{page} AND RNUM <= 11
+	 ]]>
+	</select> -->
+	
+	<select id="listCriteria" resultType="BoardVO">
+	 <![CDATA[
+		SELECT
+		    *
+		FROM
+		    (
+		        SELECT
+		            A.*,
+		            ROWNUM AS RNUM,
+		            COUNT(*) OVER() AS TOTCNT
+		        FROM
+		            (
+		                SELECT
+		                    *
+		                FROM
+		                    board
+		                ORDER BY
+		                    b_id desc
+		             
+		            ) A
+		    )
+		WHERE
+		    RNUM > #{pageStart} AND RNUM <= #{pageStart}+#{perPageNum}
+	 ]]>
+	</select>
+	
+	<select id="countPaging" resultType="int">
+		<![CDATA[
+			select count(b_id) from board where b_id > 0 
+		]]>
+	</select>
+	
+<sql id="search">
+ <if test="searchType != null" > 
+   <if test="searchType == 't'.toString()">
+     and title like #{keyword}
+   </if>
+   <if test="searchType == 'c'.toString()">
+     and content like #{keyword}
+   </if>
+   <if test="searchType == 'w'.toString()">
+     and id like CONCAT#{keyword}
+   </if>     
+   <if test="searchType == 'tc'.toString()">
+     and ( title like #{keyword} OR content like #{keyword})
+   </if>        
+   <if test="searchType == 'cw'.toString()">
+     and ( content like #{keyword} OR id like #{keyword})
+   </if>        
+   <if test="searchType == 'tcw'.toString()">
+     and (   title like #{keyword} 
+           OR 
+             content like #{keyword} 
+           OR 
+             id like #{keyword})
+   </if>              
+ </if>  
+</sql>
+	
+	<select id="listSearch" resultType="BoardVO">
+	 <![CDATA[
+		SELECT
+		    *
+		FROM
+		    (
+		        SELECT
+		            A.*,
+		            ROWNUM AS RNUM,
+		            COUNT(*) OVER() AS TOTCNT
+		        FROM
+		            (
+		                SELECT
+		                    *
+		                FROM
+		                    board
+		                ORDER BY
+		                    b_id desc
+		             
+		            ) A
+		    )
+		WHERE
+		    RNUM > #{pageStart} AND RNUM <= #{pageStart}+#{perPageNum}
+	 ]]>
+	 <include refid="search"></include>
+	</select>
+	
+	<select id="listSearchCount" resultType="int">
+		<![CDATA[
+			select count(b_id) from board where b_id > 0 
+		]]>
+		<include refid="search"></include>
+	</select>
+	
+	<!-- ******************************************************************* -->
+	<!-- 댓글 -->
+	
+	<select id="list" resultType="ReplyVO">
+		select * from reply where b_id = #{b_id}
+		order by r_id desc
+	</select>
+	
+	<insert id="create">
+		insert into reply (b_id, r_id, replytext, replyer, regdate)
+		values (#{b_id},SEQ_REPLY_NOTICE.nextval,#{replytext},#{replyer}, SYSDATE)
+	</insert>
+	
+	<update id="update">
+		update reply set replytext = #{replytext}
+		where r_id = #{r_id}
+	</update>
+	
+	<delete id="delete">
+		delete from reply where r_id = #{r_id}
+	</delete>
+	
+	<select id="listPage" resultType="ReplyVO">
+	 <![CDATA[
+		SELECT
+		    *
+		FROM
+		    (
+		        SELECT
+		            A.*,
+		            ROWNUM AS RNUM,
+		            COUNT(*) OVER() AS TOTCNT
+		        FROM
+		            (
+		                SELECT
+		                    *
+		                FROM
+		                    reply
+		                where b_id = #{b_id}
+		                ORDER BY
+		                    r_id desc
+		             
+		            ) A
+		    )
+		WHERE
+		    RNUM > #{pageStart} AND RNUM <= #{pageStart}+#{perPageNum}
+	 ]]>
+	</select>
+	
+	<select id="count" resultType="int">
+		select count(b_id) from reply where b_id = #{b_id}
+	</select>
+	
+	<select id="getB_id" resultType="int">
+		select b_id from reply where r_id = #{r_id}
+	</select>
+	
+	
+</mapper>

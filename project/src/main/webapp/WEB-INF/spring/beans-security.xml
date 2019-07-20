@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:b="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<context:component-scan base-package="com.Spring.dao"/>
+	
+	<b:bean id="bcryptPasswordEncoder"
+        class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+	<http use-expressions="true">
+		<!-- 로그인 세션을 가진 사용자만 접근 가능한 요청주소 지정 -->
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/ticket/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
+		<intercept-url pattern="/**" access="permitAll"/>
+		<csrf disabled="true"></csrf>
+		
+		<!-- 사용자 지정 로그인폼 페이지 요청주소 및 로그인 성공시, 실패시 요청 주소 지정 -->
+		<form-login login-page="/loginform" authentication-failure-url="/loginform?error=1" 
+		default-target-url="/main/main"/>
+		<!-- 로그아웃 요청주소 지정 -->
+		<logout logout-url="/logout" logout-success-url="/main/main" />
+		
+		<access-denied-handler error-page="/access_denied_page"/>
+	</http>
+	
+	<!-- <authentication-manager>
+		<authentication-provider>
+			<user-service>
+				로그인 사용자 계정 및 권한(ROLE_ADMIN) 지정
+				<user name="admin" password="admin" authorities="ROLE_ADMIN" />
+				<user name="user" password="user" authorities="ROLE_USER" />
+			</user-service>
+			<jdbc-user-service data-source-ref="dataSource"
+				users-by-username-query="SELECT userName,password, enabled 
+					FROM user_list WHERE userName=?"
+				authorities-by-username-query="SELECT userName, authority 
+					FROM user_list WHERE userName=?" />
+		
+		</authentication-provider>
+	</authentication-manager> -->
+	<authentication-manager>
+		<authentication-provider ref="userAuthProvider">
+	    </authentication-provider>
+	    <authentication-provider user-service-ref="userService">
+	    </authentication-provider>
+	</authentication-manager>
+	
+	<b:bean id="userService" class="com.spring.service.CustomUserDetailsService"/>
+	<b:bean id="userAuthProvider" class="com.spring.security.CustomAuthenticationProvider"/>
+</b:beans>
