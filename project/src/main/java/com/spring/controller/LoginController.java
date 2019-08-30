@@ -14,7 +14,7 @@ public class LoginController {
 	
 	@RequestMapping(value = "/loginform", method = { RequestMethod.GET, RequestMethod.POST })
 	public String loginform() {
-		System.out.println("loginform 메소드 호출입니다.");
+//		System.out.println("loginform 메소드 호출입니다.");
 		return "/login/loginform";// "/WEB-INF/views/loginform.jsp"
 	}
 

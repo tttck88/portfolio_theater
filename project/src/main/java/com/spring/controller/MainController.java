@@ -36,22 +36,26 @@ public class MainController {
 	
 	@RequestMapping(value = "main", method = RequestMethod.GET)
 	public void main(Model model) throws Exception {
-		 logger.info("Welcome 메인!");
+//		 logger.info("Welcome 메인!");
 		 
 		
 		List<BoardVO> boardList = boardService.listAllBoard(); boardList =
-		boardList.subList(0, 7); System.out.println("boardList = " + boardList);
+		boardList.subList(0, 5); 
+//		System.out.println("boardList = " + boardList);
 		model.addAttribute("boardList",boardList);
 		
 		 
 		 List<MovieVO> movieList = movieService.list();
 		 movieList = movieList.subList(0,3);
-		 System.out.println(movieList);
+//		 System.out.println(movieList);
 		 model.addAttribute("movieList",movieList);
 		 
 		 List<TheaterVO> theaterList = theaterService.getTheaterList();
 		 theaterList = theaterList.subList(0,3);
-		 System.out.println(theaterList);
+//		 System.out.println(theaterList);
 		 model.addAttribute("theaterList",theaterList);
 	}
-}
+	
+	@RequestMapping(value = "profile", method = RequestMethod.GET)
+	public void profile(Model model) throws Exception {
+	}}

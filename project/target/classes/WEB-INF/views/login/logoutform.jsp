@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>직원 관리</title>
+<title>로그인 - 택택극장</title>
 
 <link rel="stylesheet"
 	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">

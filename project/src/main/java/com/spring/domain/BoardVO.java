@@ -110,12 +110,6 @@ public class BoardVO {
 		return "BoardVO [b_id=" + b_id + ", m_id=" + m_id + ", hit=" + hit + ", u_id=" + u_id + ", t_id=" + t_id
 				+ ", replycnt=" + replycnt + ", b_type=" + b_type + ", id=" + id + ", title=" + title + ", content="
 				+ content + ", img1=" + img1 + ", img2=" + img2 + ", img3=" + img3 + ", img4=" + img4 + ", img5=" + img5
-				+ ", regdate=" + regdate + ", getB_id()=" + getB_id() + ", getM_id()=" + getM_id() + ", getHit()="
-				+ getHit() + ", getU_id()=" + getU_id() + ", getT_id()=" + getT_id() + ", getReplycnt()="
-				+ getReplycnt() + ", getB_type()=" + getB_type() + ", getId()=" + getId() + ", getTitle()=" + getTitle()
-				+ ", getContent()=" + getContent() + ", getImg1()=" + getImg1() + ", getImg2()=" + getImg2()
-				+ ", getImg3()=" + getImg3() + ", getImg4()=" + getImg4() + ", getImg5()=" + getImg5()
-				+ ", getRegdate()=" + getRegdate() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
+				+ ", regdate=" + regdate + "]";
 	}
 }

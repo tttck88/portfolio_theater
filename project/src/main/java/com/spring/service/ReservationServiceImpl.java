@@ -26,8 +26,30 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 	
 	@Override
+	public List<ReservationVO> getList_user_row(String username) throws Exception {
+		return reservationDAO.getList_user_row(username);
+	}
+	
+	@Override
+	public List<ReservationVO> getList_seat(int row_num) throws Exception {
+		return reservationDAO.getList_seat(row_num);
+	}
+	
+	@Override
 	public void insertRes(ReservationVO reservationVO) throws Exception {
 		reservationDAO.insertRes(reservationVO);
+	}
+
+	@Override
+	public int getRow_num() {
+		System.out.println("reservationDAO.getRow_num() " + reservationDAO.getRow_num());
+		return reservationDAO.getRow_num();
+		
+	}
+
+	@Override
+	public void deleteRes(int row_num) {
+		reservationDAO.deleteRes(row_num);
 	}
 
 

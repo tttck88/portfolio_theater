@@ -4,6 +4,8 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.domain.BoardVO;
 import com.spring.domain.Criteria;
+import com.spring.domain.CustomUserDetails;
 import com.spring.domain.PageMaker;
 import com.spring.service.BoardService;
 
@@ -34,14 +37,20 @@ public class BoardController {
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public void registerGET(BoardVO board, Model model) throws Exception {
 
-	  logger.info("register get ...........");
+//	  logger.info("register get ...........");
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String registerPOST(BoardVO board, RedirectAttributes rttr) throws Exception {
 		
-	 logger.info("insertBoard post ...........");
-	 logger.info(board.toString());
+//	 logger.info("insertBoard post ...........");
+//	 logger.info(board.toString());
+	 
+	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	CustomUserDetails user = (CustomUserDetails) auth.getPrincipal();
+	board.setId(user.getUsername());
+	
+//	System.out.println("board " +board);
 	  
 	 service.insertBoard(board);
 	  
@@ -53,7 +62,7 @@ public class BoardController {
 	@RequestMapping(value="/listAll", method=RequestMethod.GET)
 	public void listAll(Model model)throws Exception {
 		
-		logger.info("show all list............");
+//		logger.info("show all list............");
 		model.addAttribute("list", service.listAllBoard());
 	}
 	
@@ -111,7 +120,7 @@ public class BoardController {
 	@RequestMapping(value = "/modifyPage", method = RequestMethod.POST)
 	public String modifyPagingPOST(BoardVO board, Criteria cri, RedirectAttributes rttr) throws Exception {
 
-	  logger.info("mod post............");
+//	  logger.info("mod post............");
 
 	  service.updateBoard(board);
 	  
@@ -125,7 +134,7 @@ public class BoardController {
 	@RequestMapping(value="/listCri", method = RequestMethod.GET)
 	public void listAll(Criteria cri, Model model)throws Exception {
 		
-		logger.info("show list Page with Criteria.................");
+//		logger.info("show list Page with Criteria.................");
 		
 		model.addAttribute("list", service.listCriteria(cri));
 	}
@@ -133,7 +142,7 @@ public class BoardController {
 	@RequestMapping(value = "/listPage", method = RequestMethod.GET)
 	public void listPage(@ModelAttribute("cri") Criteria cri, Model model) throws Exception {
 
-	  logger.info(cri.toString());
+//	  logger.info(cri.toString());
 
 	  model.addAttribute("list", service.listCriteria(cri));
 	  PageMaker pageMaker = new PageMaker();

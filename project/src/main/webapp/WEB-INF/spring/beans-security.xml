@@ -16,6 +16,7 @@
 		<!-- 로그인 세션을 가진 사용자만 접근 가능한 요청주소 지정 -->
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/ticket/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
+		<intercept-url pattern="/sboard/register" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
 		<intercept-url pattern="/**" access="permitAll"/>
 		<csrf disabled="true"></csrf>
 		

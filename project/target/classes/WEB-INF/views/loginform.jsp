@@ -13,7 +13,23 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script
 	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<style>
+.btn-primary {
+	color: #fff;
+	background-color: #e50914;
+	border-color: #e50914
+}
 
+.btn-primary:hover {
+	color: #fff;
+	background-color: #f40612;
+	border-color: #f40612
+}
+
+.btn-primary.focus, .btn-primary:focus {
+	box-shadow: 0 0 0 .2rem rgba(38, 143, 255, .5)
+}
+</style>
 </head>
 <body>
 	<div class="modal-dialog">

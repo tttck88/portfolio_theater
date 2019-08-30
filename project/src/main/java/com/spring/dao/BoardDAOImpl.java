@@ -28,11 +28,13 @@ public class BoardDAOImpl implements BoardDAO{
 
 	@Override
 	public BoardVO readBoard(Integer b_id) throws Exception {
+		System.out.println("DAO " + sqlSession.selectOne(namespace+ ".selectBoard", b_id));
 		return sqlSession.selectOne(namespace+ ".selectBoard", b_id);
 	}
 
 	@Override
 	public void updateBoard(BoardVO vo) throws Exception {
+		System.out.println("dao " +vo);
 		sqlSession.update(namespace+ ".updateBoard", vo);
 	}
 
@@ -89,6 +91,12 @@ public class BoardDAOImpl implements BoardDAO{
 		paramMap.put("amount",amount);
 		
 		sqlSession.update(namespace + ".updateReplyCnt", paramMap);
+	}
+
+	@Override
+	public void updateViewCnt(Integer b_id) throws Exception {
+		
+		sqlSession.update(namespace + ".updateViewCnt", b_id);
 	}
 	
 }

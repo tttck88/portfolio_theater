@@ -5,6 +5,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.dao.BoardDAO;
 import com.spring.domain.BoardVO;
@@ -21,14 +23,17 @@ public class BoardServiceImpl implements BoardService {
 	public void insertBoard(BoardVO board) throws Exception {
 		dao.insertBoard(board);
 	}
-
+	
+	@Transactional(isolation = Isolation.READ_COMMITTED)
 	@Override
 	public BoardVO readBoard(Integer b_id) throws Exception {
+		dao.updateViewCnt(b_id);
 		return dao.readBoard(b_id);
 	}
 
 	@Override
 	public void updateBoard(BoardVO board) throws Exception {
+		System.out.println("service " +board);
 		dao.updateBoard(board);
 	}
 

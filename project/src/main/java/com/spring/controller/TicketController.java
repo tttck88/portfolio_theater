@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.domain.CustomUserDetails;
 import com.spring.domain.MovieVO;
 import com.spring.domain.ReservationVO;
 import com.spring.domain.ScheduleVO;
 import com.spring.domain.ScreenVO;
 import com.spring.domain.TheaterVO;
-import com.spring.domain.UserVO;
 import com.spring.service.MovieService;
 import com.spring.service.ReservationService;
 import com.spring.service.ScheduleService;
@@ -40,197 +40,269 @@ import com.spring.service.UserService;
 public class TicketController {
 
 	private static final Logger logger = LoggerFactory.getLogger(TicketController.class);
-	
+
 	@Inject
 	private MovieService movieService;
-	
+
 	@Inject
 	private TicketService ticketService;
-	
+
 	@Inject
 	private ScheduleService scheduleService;
-	
+
 	@Inject
 	private ScreenService screenService;
-	
+
 	@Inject
 	private TheaterService theaterService;
 
 	@Inject
 	private ReservationService reservationService;
-	
+
 	@Inject
 	private UserService userService;
-	
-	//예매하기로 접근
-	@RequestMapping(value="/ticket", method=RequestMethod.GET)
+
+	// 예매하기로 접근
+	@RequestMapping(value = "/ticket", method = RequestMethod.GET)
 	public void movieList(Model model) throws Exception {
-		
-		logger.info("ticket/ticket");
-		
-		model.addAttribute("movieList",movieService.list());
+
+//		logger.info("ticket/ticket");
+
+		model.addAttribute("movieList", movieService.list());
 	}
-	//영화선택후 예매페이지 접근
-	@RequestMapping(value="/ticketByMovie", method=RequestMethod.GET)
-	public String movieList(Model model,  @ModelAttribute("m_id") int m_id) throws Exception {
-		
-		logger.info("ticket/ticket");
-		
-		model.addAttribute("movieList",movieService.list());
-		
+
+	// 영화선택후 예매페이지 접근
+	@RequestMapping(value = "/ticketByMovie", method = RequestMethod.GET)
+	public String movieList(Model model, @ModelAttribute("m_id") int m_id) throws Exception {
+
+//		logger.info("ticket/ticket");
+
+		model.addAttribute("movieList", movieService.list());
+		model.addAttribute("movieVO", movieService.readMovie(m_id));
+
 		return "/ticket/ticket";
 	}
-	
-	@RequestMapping(value="/theater", method=RequestMethod.POST)
+
+	@RequestMapping(value = "/theater", method = RequestMethod.POST)
 	@ResponseBody
 	public List<TheaterVO> theaterList(MovieVO mvo) throws Exception {
-		
-		logger.info("ticket/theater");
+
+//		logger.info("ticket/theater");
 //		System.out.println("=======1=========" + mvo);
 //		System.out.println("======2==========" + scheduleService.list(mvo));scr_seat_tot
-		
+
 		List<ScheduleVO> scheduleList = scheduleService.list(mvo);
 		List<TheaterVO> theaterList = new ArrayList();
 		TheaterVO theaterVO = new TheaterVO();
-		
-		for(ScheduleVO scheduleVO : scheduleList) {
-			
+
+		for (ScheduleVO scheduleVO : scheduleList) {
+
 //			System.out.println("======3========극장" + scheduleVO.getT_id());
 			theaterVO.setT_id(scheduleVO.getT_id());
 //			theaterService.getTheater(theaterVO);
-			System.out.println("========t_id에 따른 극장 이름===========" + theaterService.getTheater(theaterVO));
+//			System.out.println("========t_id에 따른 극장 이름===========" + theaterService.getTheater(theaterVO));
 			theaterList.add(theaterService.getTheater(theaterVO));
 		}
-		System.out.println("======theaterList======" + theaterList);
+//		System.out.println("======theaterList======" + theaterList);
 		return theaterList;
 	}
 
-	@RequestMapping(value="/screen", method=RequestMethod.POST)
+	@RequestMapping(value = "/screen", method = RequestMethod.POST)
 	@ResponseBody
-	public List<ScreenVO> screenList(TheaterVO tvo) throws Exception {
+	public List<ScreenVO> screenList(ScheduleVO svo) throws Exception {
+
+//		logger.info("ticket/screen");
+//		System.out.println("svo " + svo);
+
+//		System.out.println("======screenList======" + screenService.getScrOne_m(tvo));
 		
-		logger.info("ticket/screen");
+		List<ScreenVO> screenList = new ArrayList();
+		List<ScheduleVO> scheduleList = new ArrayList();
+		scheduleList = scheduleService.getSchList_mt(svo);
+//		System.out.println("scheduleList " + scheduleList);
 		
-		System.out.println("======screenList======" + screenService.getScrOne_m(tvo));
+		for (ScheduleVO scheduleVO: scheduleList) {
+			
+			screenList.add(screenService.getScrOne(scheduleVO.getScr_id()));
+		}
 		
-		return screenService.getScrOne_m(tvo);
+//		System.out.println("screenList " + screenList);
+		return screenList;
+
+//		return screenService.getScrOne_m(tvo);
 	}
-	
-	@RequestMapping(value="/time", method=RequestMethod.POST)
+
+	@RequestMapping(value = "/time", method = RequestMethod.POST)
 	@ResponseBody
 	public List<ScheduleVO> time(ScheduleVO svo) throws Exception {
-		
-		logger.info("ticket/time");
-		
+
+//		logger.info("ticket/time");
+
 		List<ScheduleVO> schList = new ArrayList();
-		
-		for(ScheduleVO scheduleVO : scheduleService.getList(svo)) {
-			
+
+		for (ScheduleVO scheduleVO : scheduleService.getList(svo)) {
+
 			schList.add(scheduleVO);
-			
+
 		}
 		return schList;
 	}
-	
-	@RequestMapping(value="/reservation", method=RequestMethod.POST)
+
+	@RequestMapping(value = "/reservation", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Integer> reservation(ScheduleVO schVO) throws Exception {
-		
-		logger.info("ticket/reservation");
-		
-		Map<String,Integer> map = new HashMap();
-		
-		int i=0;
-		System.out.println("======schVO======" +schVO);
-		System.out.println("======schVO.getSch_id()======" + schVO.getSch_id());
-		System.out.println("======reservationService.getList_sch(schVO.getSch_id())======" + reservationService.getList_sch(schVO.getSch_id()));
-		for(ReservationVO reservationVO : reservationService.getList_sch(schVO.getSch_id())) {
-			i++;
+	public Map<String, Integer> reservation(ScheduleVO schVO, ReservationVO rVO) throws Exception {
+
+//		logger.info("ticket/reservation");
+
+		Map<String, Integer> map = new HashMap();
+
+		int i = 0;
+//		System.out.println("======schVO======" + schVO);
+//		System.out.println("======rVO======" + rVO);
+//		System.out.println("======schVO.getSch_id()======" + schVO.getSch_id());
+//		System.out.println("======reservationService.getList_sch(schVO.getSch_id())======"+ reservationService.getList_sch(schVO.getSch_id()));
+		for (ReservationVO reservationVO : reservationService.getList_sch(schVO.getSch_id())) {
+//			System.out.println("======rVO======" + rVO);
+//			System.out.println("======rVO.getR_date()======" + rVO.getR_date());
+//			System.out.println("======reservationVO.getR_date()======" + reservationVO.getR_date());
+			if ((rVO.getR_date()).equals(reservationVO.getR_date())) {
+//				System.out.println("true");
+				i++;
+			}
 		}
-		
+
 		int tot = screenService.getScrOne(schVO.getScr_id()).getScr_seat_tot();
-		System.out.println("======i======" + i);
-		System.out.println("======tot======" + tot);
-		map.put("i",i);
-		map.put("tot",tot);
+//		System.out.println("======i======" + i);
+//		System.out.println("======tot======" + tot);
+		map.put("i", i);
+		map.put("tot", tot);
 		return map;
 	}
-	
-	@RequestMapping(value="/seat", method= RequestMethod.POST)
-	public void seat(ScheduleVO schVO,ReservationVO rVO,Model model) throws Exception {
-		System.out.println("======seatseatseatseatseatseat======");
-		System.out.println(schVO);
-		System.out.println(rVO);
-		logger.info("ticket/seat");
-		
-		//예약한좌석조회
+
+	@RequestMapping(value = "/seat", method = RequestMethod.POST)
+	public void seat(ScheduleVO schVO, ReservationVO rVO, Model model) throws Exception {
+//		System.out.println("======seatseatseatseatseatseat======");
+//		System.out.println(schVO);
+//		System.out.println(rVO);
+//		logger.info("ticket/seat");
+
+		// 예약한좌석조회
 		List<ReservationVO> list = reservationService.getList_sch(schVO.getSch_id());
+		
+		List<ReservationVO> r_list = new ArrayList();
+		
+		for (ReservationVO reservationVO : list) {
+			if ((rVO.getR_date()).equals(reservationVO.getR_date())) {
+				r_list.add(reservationVO);
+			}
+		}
+
+//		System.out.println("rVO.getR_date()    " + rVO.getR_date());
+//		System.out.println("listlist    " + list);
+//		System.out.println("r_listr_list    " + r_list);
+		
+		// 상영관
+		Map<String, Object> map = new HashMap();
+		map.put("scheduleVO", schVO);
+		map.put("reservationList", r_list);
+		map.put("screenVO", screenService.getScrOne(schVO.getScr_id()));
+		map.put("r_date", rVO.getR_date());
+
+		model.addAttribute("map", map);
+
+		// 영화포스터 영화제목 극장 날짜 상영관 시간 좌석 인원
+		//영화포스터,제목
+		MovieVO mVO = movieService.readMovie(schVO.getM_id());
+		mVO.getPoster();
+		mVO.getTitle();
+		model.addAttribute("poster", mVO.getPoster());
+		model.addAttribute("movieTitle", mVO.getTitle());
+//		System.out.println("mVO " + mVO.getPoster());
+//		System.out.println("mVO " + mVO.getTitle());
+		//극장
+		System.out.println("schVO.getT_id() " + schVO.getT_id());
+		TheaterVO tVO = new TheaterVO();
+		tVO.setT_id(schVO.getT_id());
+		tVO = theaterService.getTheater(tVO);
+//		System.out.println("tVO " + tVO);
+		model.addAttribute("theaterName", tVO.getName());
+		/*
+		 * TheaterVO tVO = tVO.setT_id(schVO.getT_id()); System.out.println("tVO " +
+		 * tVO); tVO.getName(); model.addAttribute("theaterName", tVO.getName());
+		 */
+		//날짜
+		rVO.getR_date();
+		model.addAttribute("r_date", rVO.getR_date());
+//		System.out.println("rVO " + rVO);
 		//상영관
+		ScreenVO scrVO = screenService.getScrOne(schVO.getScr_id());
+		scrVO.getScr_name();
+		model.addAttribute("screenName", scrVO.getScr_name());
+//		System.out.println("scrVO " + scrVO);
+		//시간
+		schVO.getTime();
+		model.addAttribute("time", schVO.getTime());
+//		System.out.println("schVO.getTime() " + schVO.getTime());
 		
-		Map<String,Object> map = new HashMap();
-		map.put("scheduleVO",schVO);
-		map.put("reservationList",reservationService.getList_sch(schVO.getSch_id()));
-		map.put("screenVO",screenService.getScrOne(schVO.getScr_id()));
-		map.put("r_date",rVO.getR_date());
 		
-		model.addAttribute("map",map);
 	}
+
 	@RequestMapping("/chosenSeat")
 	@ResponseBody
 	public String seat(HttpServletRequest request) {
-		logger.info("ticket/chosenSeat");
+//		logger.info("ticket/chosenSeat");
 		String seat = request.getParameter("rowCol");
-		
+
 		return seat;
 	}
-	
-	@RequestMapping(value="/pay", method= RequestMethod.POST)
-	public void pay(ScheduleVO schVO,ReservationVO reservationVO, 
-			HttpServletRequest request, @RequestParam("check_seat") String rowCol
-			,Model model,HttpSession session) throws Exception {
+
+	@RequestMapping(value = "/pay", method = RequestMethod.POST)
+	public void pay(ScheduleVO schVO, ReservationVO reservationVO, HttpServletRequest request,
+			@RequestParam("check_seat") String rowCol, Model model, HttpSession session) throws Exception {
 		logger.info("ticket/pay");
-		
-		System.out.println("======paypaypaypaypaypay======");
-		
+
+//		System.out.println("======paypaypaypaypaypay======");
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		Object user = auth.getPrincipal();
-		
-		System.out.println("auth" + auth);
-		System.out.println("user" + user);
-		System.out.println(reservationVO);
-		
-		UserVO userVO = userService.getUser((String)user);
-		
+//		System.out.println("-----------auth -----" + auth.getName());
+		String username = auth.getName();
+
+//		System.out.println("auth" + auth);
+//		System.out.println("user" + username);
+//		System.out.println(reservationVO);
+
+		CustomUserDetails userVO = userService.getUser(username);
+
 		String seats[] = request.getParameterValues("check_seat");
-		System.out.println("seats  " + seats);
-		
+//		System.out.println("seats  " + seats);
+
 //		String scheduleVODate = schVO.getDate();
-		
+
 //		schVO = scheduleService.getSchOne(schVO);
 //		
 //		schVO.setDate(scheduleVODate);
 //		
 //		System.out.println("scheduleVO : " + scheduleVO);
-		
+
 		List<ReservationVO> reservationList = new ArrayList<>();
-		for(String seat: seats) {
+		for (String seat : seats) {
 			ReservationVO rVO = new ReservationVO();
-			rVO.setUsername((String)user);
-			
+			rVO.setUsername(username);
+
 			String splitSeat[] = seat.split("/");
-			
+
 			rVO.setSeat_row(splitSeat[0]);
 			rVO.setSeat_col(splitSeat[1]);
 			rVO.setSch_id(schVO.getSch_id());
-			System.out.println("rVO.getR_date() : " + reservationVO.getR_date());
+//			System.out.println("rVO.getR_date() : " + reservationVO.getR_date());
 			rVO.setR_date(reservationVO.getR_date());
-			System.out.println("rVO : " + rVO);
+//			System.out.println("rVO : " + rVO);
 //			rVO.setPrice(Integer.parseInt(schVO.getPrice()));
-			
-			//String to Date
+
+			// String to Date
 //			Date date = Date.valueOf(schVO.getDate());
 //			reservationVO.setR_date(date);
-			
+
 //			System.out.println(reservationVO);
 			reservationList.add(rVO);
 		}
@@ -242,22 +314,22 @@ public class TicketController {
 //		scheduleVO.getM_id();
 		int totPrice = 0;
 		totPrice = reservationList.size() * 6000;
-		
+
 		MovieVO movieVO = new MovieVO();
-		System.out.println("scheduleVO.getM_id() : " + schVO.getM_id());
+//		System.out.println("scheduleVO.getM_id() : " + schVO.getM_id());
 		movieVO.setM_id(schVO.getM_id());
 		movieVO = movieService.readMovie(movieVO.getM_id());
-		
+
 //		scheduleVO.getScr_id();
 		ScreenVO screenVO = new ScreenVO();
 		screenVO.setScr_id(schVO.getScr_id());
 		screenVO = screenService.getScrOne(screenVO.getScr_id());
-		
+
 //		theater
 		TheaterVO theaterVO = new TheaterVO();
 		theaterVO.setT_id(schVO.getT_id());
 		theaterVO = theaterService.getTheater(theaterVO);
-		
+
 		request.setAttribute("movieVO", movieVO);
 		request.setAttribute("screenVO", screenVO);
 		request.setAttribute("theaterVO", theaterVO);
@@ -268,19 +340,19 @@ public class TicketController {
 		request.setAttribute("userVO", userVO);
 		request.setAttribute("reservationVO", reservationVO);
 		session.setAttribute("reservationList", reservationList);
-		
-		System.out.println(movieVO);
-		System.out.println(screenVO);
-		System.out.println(theaterVO);
-		System.out.println(schVO);
-		System.out.println(reservationList);
+
+//		System.out.println(movieVO);
+//		System.out.println(screenVO);
+//		System.out.println(theaterVO);
+//		System.out.println(schVO);
+//		System.out.println(reservationList);
 	}
-	
+
 	@RequestMapping("/pay")
 	@ResponseBody
 	public String pay() {
-		logger.info("ticket/pay");
-		
+//		logger.info("ticket/pay");
+
 		return "success";
 		/*
 		 * imp_uid = extract_POST_value_from_url('imp_uid') //post ajax request로부터
@@ -295,39 +367,42 @@ public class TicketController {
 		 * IF payment_result.status == 'ready' AND payment.pay_method == 'vbank'
 		 * vbank_number_assigned(payment_result) //가상계좌 발급성공 ELSE
 		 * fail_post_process(payment_result) //결제실패 처리
-		 */		
+		 */
 	}
-	
-	@RequestMapping(value="/payOk", method= RequestMethod.POST)
-	public String payOk(HttpSession session,Model model,MovieVO mVO,TheaterVO tVO,ScreenVO scrVO,ScheduleVO schVO) throws Exception {
-		logger.info("ticket/payOk");
-		System.out.println("reservationList =======" + session.getAttribute("reservationList"));
+
+	@RequestMapping(value = "/payOk", method = RequestMethod.POST)
+	public String payOk(HttpSession session, Model model, MovieVO mVO, TheaterVO tVO, ScreenVO scrVO, ScheduleVO schVO)
+			throws Exception {
+//		logger.info("ticket/payOk");
+//		System.out.println("reservationList =======" + session.getAttribute("reservationList"));
 		List<ReservationVO> reservationList = (List<ReservationVO>) session.getAttribute("reservationList");
+
+		int row_num = reservationService.getRow_num();
 		
-		for(ReservationVO reservationVO : reservationList) {
+		for (ReservationVO reservationVO : reservationList) {
+			reservationVO.setRow_num(row_num);
 			reservationService.insertRes(reservationVO);
 		}
+		
 		session.removeAttribute("reservationList");
-		
-		movieService.readMovie(mVO.getM_id());
-		theaterService.list(tVO.getT_id());
-		screenService.getScrOne(scrVO.getScr_id());
-		scheduleService.getOne(schVO);
-		
-		System.out.println("mVO =======" + mVO);
-		System.out.println("movieService =======" + movieService.readMovie(mVO.getM_id()));
-		System.out.println("tVO =======" + tVO);
-		System.out.println("theaterService =======" + theaterService.getTheater(tVO));
-		System.out.println("screenService =======" + screenService.getScrOne(scrVO.getScr_id()));
-		System.out.println("scheduleService =======" + scheduleService.getOne(schVO));
-		
-		model.addAttribute("reservationList", reservationList);
-		model.addAttribute("movieVO", movieService.readMovie(mVO.getM_id()));
-		model.addAttribute("theaterVO", theaterService.list(tVO.getT_id()));
-		model.addAttribute("screenVO", screenService.getScrOne(scrVO.getScr_id()));
-		model.addAttribute("scheduleVO", scheduleService.getOne(schVO));
-		
-		return "/myPage/myPage";
+
+		/*
+		 * System.out.println("mVO =======" + mVO);
+		 * System.out.println("movieService =======" +
+		 * movieService.readMovie(mVO.getM_id())); System.out.println("tVO =======" +
+		 * tVO); System.out.println("theaterService =======" +
+		 * theaterService.getTheater(tVO)); System.out.println("screenService =======" +
+		 * screenService.getScrOne(scrVO.getScr_id()));
+		 * System.out.println("scheduleService =======" +
+		 * scheduleService.getOne(schVO));
+		 * 
+		 * model.addAttribute("reservationList", reservationList);
+		 * model.addAttribute("movieVO", movieService.readMovie(mVO.getM_id()));
+		 * model.addAttribute("theaterVO", theaterService.getTheater(tVO));
+		 * model.addAttribute("screenVO", screenService.getScrOne(scrVO.getScr_id()));
+		 * model.addAttribute("scheduleVO", scheduleService.getOne(schVO));
+		 */
+		return "redirect:/myPage/myPage";
 		/*
 		 * imp_uid = extract_POST_value_from_url('imp_uid') //post ajax request로부터
 		 * imp_uid확인
@@ -341,11 +416,6 @@ public class TicketController {
 		 * IF payment_result.status == 'ready' AND payment.pay_method == 'vbank'
 		 * vbank_number_assigned(payment_result) //가상계좌 발급성공 ELSE
 		 * fail_post_process(payment_result) //결제실패 처리
-		 */		
+		 */
 	}
 }
-
-
-
-
-

@@ -13,6 +13,8 @@ public class CustomUserDetails implements UserDetails {
     private String password;
     private String authority;
     private String name;
+    private String email;
+    private String phone;
     private boolean enabled;
     
     public void setAuthority(String authority) {
@@ -38,6 +40,7 @@ public class CustomUserDetails implements UserDetails {
 	public String getUsername() {
 		return username;
 	}
+	
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
@@ -60,10 +63,21 @@ public class CustomUserDetails implements UserDetails {
     public void setName(String name) {
     	this.name = name;
     }
-    
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 	@Override
 	public String toString() {
 		return "CustomUserDetails [username=" + username + ", password=" + password + ", authority=" + authority
-				+ ", enabled=" + enabled + ", name=" + name + "]";
+				+ ", name=" + name + ", email=" + email + ", phone=" + phone + ", enabled=" + enabled + "]";
 	}
 }

@@ -18,4 +18,10 @@ public interface ReplyService {
 	public List<ReplyVO> listReplyPage(Integer b_id, Criteria cri) throws Exception; 
 	
 	public int count(Integer b_id) throws Exception;
+
+	public ReplyVO selectOne(int r_id) throws Exception;
+
+	public void addReplyReply(ReplyVO vo) throws Exception;
+
+	public List<ReplyVO> listReplyReply(Integer originId);
 }

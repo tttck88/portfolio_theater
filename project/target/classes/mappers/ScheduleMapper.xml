@@ -6,19 +6,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.spring.mapper.ScheduleMapper">
 
 	<select id="list" resultType="com.spring.domain.ScheduleVO">
-		select * from SCHEDULE
+		select DISTINCT t_id from SCHEDULE
 		where m_id = #{m_id}
+		<!-- select * from SCHEDULE
+		where m_id = #{m_id} -->
 	</select>
 	
 	<select id="getList" resultType="com.spring.domain.ScheduleVO">
 		select * from SCHEDULE
 		where m_id = #{m_id} and t_id = #{t_id} and scr_id = #{scr_id}
-		ORDER BY time DESC
+		ORDER BY time
 	</select>
 	
 	<select id="getOne" resultType="com.spring.domain.ScheduleVO">
 		select * from SCHEDULE
 		where sch_id = #{sch_id}
+	</select>
+	
+	<select id="getSchList_mt" resultType="com.spring.domain.ScheduleVO">
+		<![CDATA[
+		select * from SCHEDULE
+		where m_id = #{m_id} and t_id = #{t_id} and ROWID IN (SELECT MAX(ROWID) FROM SCHEDULE where m_id = #{m_id} and t_id = #{t_id} GROUP BY scr_id)
+        order by scr_id
+       	]]>
 	</select>
 
 	<!-- <insert id="insertTheater">

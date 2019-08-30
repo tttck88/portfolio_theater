@@ -21,4 +21,12 @@ public interface ReplyDAO {
 	public int count(Integer b_id) throws Exception;
 	
 	public int getB_id(Integer b_id) throws Exception;
+
+	public ReplyVO selectOne(int r_id) throws Exception;
+
+	public void replyAdd(ReplyVO vo) throws Exception;
+
+	public List<ReplyVO> listReply(Integer originId);
+
+	public List<ReplyVO> listReplyCnt(Integer r_id);
 }

@@ -8,12 +8,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from user_list where username = #{username}
 	</select>
 	
-	<select id="getUser" resultType="com.spring.domain.UserVO">
+	<select id="getUser" resultType="CustomUserDetails">
 		select * from user_list where username = #{username}
 	</select>
 	
+	<select id="getUser_email" resultType="CustomUserDetails">
+		select * from user_list where email = #{email}
+	</select>
+	
 	<insert id="registerUser">
-		insert into user_list (username,password,enabled,authority,name) values
-		(#{username},#{password},'1','ROLE_USER',#{name})
+		insert into user_list (username,password,enabled,authority,name,email,phone) values
+		(#{username},#{password},'1','ROLE_USER',#{name},#{email},#{phone})
 	</insert>
+	
+	<update id="setPw">
+		UPDATE user_list
+		SET PASSWORD
+		= #{password}
+		WHERE USERNAME = #{username}
+	</update>
+	
 </mapper>

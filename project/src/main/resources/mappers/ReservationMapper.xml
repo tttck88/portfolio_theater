@@ -10,17 +10,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where sch_id = #{sch_id}
 	</select>
 	
+	<select id="getList_sch_r_date" resultType="com.spring.domain.ReservationVO">
+		select * from reservation
+		where sch_id = #{sch_id} and r_date = #{r_date}
+	</select>
+	
 	<select id="getList_user" resultType="com.spring.domain.ReservationVO">
 		select * from reservation
 		where username = #{username}
+		
+	</select>
+	
+	<select id="getList_user_row" resultType="com.spring.domain.ReservationVO">
+		select min(sch_id) as sch_id,min(r_date) as r_date,row_num from reservation 
+		where username = #{username} group by row_num order by row_num desc
+	</select>
+	
+	<select id="getList_seat" resultType="com.spring.domain.ReservationVO">
+		select seat_row,seat_col from reservation where row_num = #{row_num} order by row_num desc
+	</select>
+	
+	<select id="getRow_num" resultType="int">
+	<![CDATA[
+		select nvl(max(row_num),0)+1 from reservation
+	]]>
 	</select>
 
 	<insert id="insertRes">
 	<![CDATA[
-		INSERT INTO RESERVATION (R_ID,USERNAME,SCH_ID,SEAT_ROW,SEAT_COL,R_DATE)
-		VALUES ((SELECT NVL(MAX(R_ID),0)+1 FROM RESERVATION), #{username}, #{sch_id}, #{seat_row}, #{seat_col}, #{r_date}) 
+		INSERT INTO RESERVATION (R_ID,USERNAME,SCH_ID,SEAT_ROW,SEAT_COL,R_DATE,ROW_NUM)
+		VALUES ((SELECT NVL(MAX(R_ID),0)+1 FROM RESERVATION), #{username}, #{sch_id}, #{seat_row}, #{seat_col}, #{r_date}, #{row_num}) 
 	]]>
 	</insert>
+	
+	<delete id="deleteRes">
+		delete from reservation where row_num = #{row_num}
+	</delete>
 
 	<!-- <select id="getTheater" resultType="com.spring.domain.TheaterVO">
 		SELECT * FROM THEATER where T_ID = #{t_id}

@@ -43,6 +43,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		
 		logger.info("AuthenticationProvider loadUserByUsername :::::: 3");
 		
+		if(user.getPassword() == password) {
+			logger.info("matchPassword :::::::: true!");
+			
+			return new UsernamePasswordAuthenticationToken(username, password, authorities);
+		}
+		
 		if(!matchPassword(password, user.getPassword())) {
 			logger.info("matchPassword :::::::: false!");
 			throw new BadCredentialsException(username+"false");

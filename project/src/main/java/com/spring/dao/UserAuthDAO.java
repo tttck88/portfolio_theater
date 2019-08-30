@@ -20,8 +20,11 @@ public class UserAuthDAO {
     }
 
 	public void registerUser(CustomUserDetails user) {
-		System.out.println("UserAuthDAO -- " + user);
 		sqlSession.insert(namespace+ ".registerUser", user);
+	}
+
+	public CustomUserDetails getUser_email(String email) {
+		return sqlSession.selectOne(namespace+ ".getUser_email", email);
 	}
 
 }

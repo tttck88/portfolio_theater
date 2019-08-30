@@ -1,13 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %><%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="org.springframework.security.core.Authentication" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-	// °æ·Î /biz ºÎÅÍ ½ÃÀÛ  [http://localhost:8080/biz/ @@.do ¿äÃ» ÇÏ±â À§ÇØ]
+	// ê²½ë¡œ /biz ë¶€í„° ì‹œì‘  [http://localhost:8080/biz/ @@.do ìš”ì²­ í•˜ê¸° ìœ„í•´]
 	String contextPath = request.getContextPath();
-	// theme ±îÁö µé¾î¿Â °æ·Î 
+	// theme ê¹Œì§€ ë“¤ì–´ì˜¨ ê²½ë¡œ 
 	String KPath = contextPath + "/resources";
 	
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -22,26 +22,31 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>${theaterVO.name } - íƒíƒê·¹ì¥</title>
 <!-- Bootstrap core CSS -->
-<link href="<%=KPath%>/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<%-- <link href="<%=KPath%>/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> --%>
 <!-- Custom styles for this template -->
 <link href="<%=KPath%>/css/small-business.css" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=b67384432e7b18e82f08ed86614a1558"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <style>
-	 body {background-color: #e9e7e8;}
-	 
-	ul{
-		list-style:none;
-		padding-left:0px;
-	}
+body {background-color: #e9e7e8;}
+ 
+ul{
+	list-style:none;
+	padding-left:0px;
+}
+
+#bigDiv {
+box-shadow: 0 0 5px rgba(0,0,0,.2);
+}
 </style>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/main/header.jsp"%>
 <!-- Page Content -->
-<div class="container" style="background-color: white;padding-top: 20px;margin-top: 40px;margin-bottom: 40px;padding-bottom: 20px;">
+<div class="container" style="background-color: white;padding-top: 20px;margin-top: 40px;margin-bottom: 40px;padding-bottom: 20px;" id="bigDiv">
   <!-- Heading Row -->
   <div class="row">
     <div class="col-lg-5" style="height: 140%">
@@ -52,9 +57,9 @@
     <div class="col-lg-6">
       <h1 style="font-weight: 700;">${theaterVO.name }</h1>
       <ul>
-      	<li><strong>±ØÀå¹øÈ£</strong> ${theaterVO.phone }</li><br>
-      	<li><strong>±ØÀåÁÖ¼Ò</strong> ${theaterVO.adress }</li><br>
-      	<li><strong>±ØÀå¼Ò°³</strong> ${theaterVO.content }</li>
+      	<li><strong>ê·¹ì¥ë²ˆí˜¸</strong> ${theaterVO.phone }</li>
+      	<li><strong>ê·¹ì¥ì£¼ì†Œ</strong> ${theaterVO.adress }</li>
+      	<li><strong>ê·¹ì¥ì†Œê°œ</strong> ${theaterVO.content }</li>
       </ul>
       <div id="map" style="height:320px"></div>
     </div>
@@ -67,22 +72,22 @@
   <div class="row my-5">
     <div class="col-md-4 mb-5">
       <div class="card h-100">
-        <img class="img-fluid rounded mb-4 mb-lg-0" src="/resources/theaterimg/${theaterVO.img1 }"
-										alt="service thumb">
-      </div>
-    </div>
-    <!-- /.col-md-4 -->
-    <div class="col-md-4 mb-5">
-      <div class="card h-100">
         <img class="img-fluid rounded mb-4 mb-lg-0" src="/resources/theaterimg/${theaterVO.img2 }"
-										alt="service thumb">
+										alt="service thumb" style="height: 261px;">
       </div>
     </div>
     <!-- /.col-md-4 -->
     <div class="col-md-4 mb-5">
       <div class="card h-100">
         <img class="img-fluid rounded mb-4 mb-lg-0" src="/resources/theaterimg/${theaterVO.img3 }"
-										alt="service thumb">
+										alt="service thumb" style="height: 261px;">
+      </div>
+    </div>
+    <!-- /.col-md-4 -->
+    <div class="col-md-4 mb-5">
+      <div class="card h-100">
+        <img class="img-fluid rounded mb-4 mb-lg-0" src="/resources/theaterimg/${theaterVO.img4 }"
+										alt="service thumb" style="height: 261px;">
       </div>
     </div>
     <!-- /.col-md-4 -->
@@ -101,15 +106,15 @@
 
 	var map = new daum.maps.Map(container, options);
 	
-	// ¸¶Ä¿°¡ Ç¥½ÃµÉ À§Ä¡ÀÔ´Ï´Ù 
+	// ë§ˆì»¤ê°€ í‘œì‹œë  ìœ„ì¹˜ì…ë‹ˆë‹¤ 
 	var markerPosition  = new daum.maps.LatLng("${theaterVO.location1 }", "${theaterVO.location2 }"); 
 
-	// ¸¶Ä¿¸¦ »ı¼ºÇÕ´Ï´Ù
+	// ë§ˆì»¤ë¥¼ ìƒì„±í•©ë‹ˆë‹¤
 	var marker = new daum.maps.Marker({
 	    position: markerPosition
 	});
 
-	// ¸¶Ä¿°¡ Áöµµ À§¿¡ Ç¥½ÃµÇµµ·Ï ¼³Á¤ÇÕ´Ï´Ù
+	// ë§ˆì»¤ê°€ ì§€ë„ ìœ„ì— í‘œì‹œë˜ë„ë¡ ì„¤ì •í•©ë‹ˆë‹¤
 	marker.setMap(map);
 </script>
 <%@ include file="/WEB-INF/views/main/footer.jsp"%>

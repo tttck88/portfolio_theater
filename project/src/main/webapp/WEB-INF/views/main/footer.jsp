@@ -1,68 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 	<!-- Navigation -->
-<div class="container-fluid" style="padding-left: 0px; padding-right: 0px">
-<nav class="navbar navbar-expand-xl navbar-dark">
-    <a class="navbar-brand" href="/main/main">ецец╠ьюЕ</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a href='#' class="nav-link">ецец</a>
-        </li>
-        <li class="nav-item">
-          <a href='/theater/theaterList' class="nav-link">╠ьюЕ</a>
-        </li>
-        <li class="nav-item">
-          <a href='/movie/movieList' class="nav-link">гЖюГ╩С©╣юш</a>
-        </li>
-        <li class="nav-item">
-          <a href='/ticket/ticket' class="nav-link">©╣х╜©╧╦е</a>
-        </li>
-        <li class="nav-item">
-          <a href='/sboard/list' class="nav-link">╟ЬаЖ╩Ггв</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">╧╝юг╟т╫цфг</a>
-        </li>
-      </ul>
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; М┐²М┐²Й╥╧Л·╔ 2019</p>
+      <p class="m-0 text-center text-white">М∙°Л═∙М┐² 010-8884-0249</p>
     </div>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-    	<ul class="navbar-nav ml-auto">
-        <li class="nav-item active">
-          <sec:authorize access="isAnonymous()">
-        <li class="nav-item">
-          <a href='/loginform' class="nav-link">╥н╠вюн</a>
-        </li>
-        </sec:authorize>
-        <sec:authorize access="isAuthenticated()">
-        <li class="nav-item">
-		<div>
-			<a href="#" onclick="document.getElementById('logout-form').submit();"  class="nav-link">╥н╠в╬ф©Т</a>
-			<form id="logout-form" action='<c:url value='/logout'/>' method="POST">
-			   <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
-			</form>
-		</div>
-		</li>
-		</sec:authorize>
-		<sec:authorize access="isAnonymous()">
-		<li class="nav-item">
-			<div><a href="/user/register" class="nav-link">х╦©Ь╟║ют</a></div>
-		</li>
-		</sec:authorize>
-		<sec:authorize access="isAuthenticated()">
-		<li class="nav-item">
-			<div><a href="/myPage/myPage" class="nav-link">╦╤юлфДюлаЖ</a></div>
-		</li>
-		</sec:authorize>
-		<sec:authorize access="hasRole('ROLE_ADMIN')">
-        <li class="nav-item">
-          <a href='/admin' class="nav-link">╟Э╦╝юз</a>
-        </li>
-        </sec:authorize>
-        </ul>
-    </div>
-</nav>
-</div>
+    <!-- /.container -->
+  </footer>

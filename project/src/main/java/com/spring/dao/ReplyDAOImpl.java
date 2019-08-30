@@ -64,7 +64,30 @@ public class ReplyDAOImpl implements ReplyDAO {
 	@Override
 	public int getB_id(Integer r_id) throws Exception {
 		
-		return session.selectOne(namespace + " .getB_id", r_id);
+		return session.selectOne(namespace + ".getB_id", r_id);
+	}
+
+	@Override
+	public ReplyVO selectOne(int r_id) throws Exception {
+		return session.selectOne(namespace + ".getReply", r_id);
+	}
+
+	@Override
+	public void replyAdd(ReplyVO vo) throws Exception {
+		System.out.println("DAO " + vo);
+		session.insert(namespace + ".replyAdd", vo);
+	}
+
+	@Override
+	public List<ReplyVO> listReply(Integer originId) {
+		System.out.println("dao " + originId);
+		return session.selectList(namespace + ".listReply", originId);
+	}
+
+	@Override
+	public List<ReplyVO> listReplyCnt(Integer r_id) {
+		System.out.println("dao " + r_id);
+		return session.selectList(namespace + ".listReplyCnt", r_id);
 	}
 
 }

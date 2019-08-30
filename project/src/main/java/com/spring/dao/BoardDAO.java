@@ -30,5 +30,7 @@ public interface BoardDAO {
 	
 	public void updateReplyCnt(Integer b_id, int amount)throws Exception;
 	
+	public void updateViewCnt(Integer b_id) throws Exception;
+	
 	
 }

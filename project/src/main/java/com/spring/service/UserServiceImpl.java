@@ -29,7 +29,24 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserVO getUser(String userName) throws Exception {
+	public CustomUserDetails getUser(String userName) throws Exception {
 		return userDAO.getUser(userName);
+	}
+
+	@Override
+	public CustomUserDetails getUser_email(String email) throws Exception {
+		CustomUserDetails customUserDetails = userAuthDAO.getUser_email(email);
+		
+		if(customUserDetails == null) {
+		throw new Exception();
+		}
+		
+		return customUserDetails;
+	}
+
+	@Override
+	public void setPw(CustomUserDetails userVO) throws Exception {
+		userDAO.setPw(userVO);
+		
 	}
 }

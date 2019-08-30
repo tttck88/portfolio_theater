@@ -40,12 +40,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- scr_id로 가져오기 -->
 	<select id="getScrOne" resultType="com.spring.domain.ScreenVO">
-	        select * from screen where scr_id = #{scr_id}
+	        select * from screen where scr_id = #{scr_id} order by scr_id
 	</select>
 	
 	<!-- m_id로 상영관 가져오기 -->
 	<select id="getScrOne_m" resultType="com.spring.domain.ScreenVO">
-	        select * from screen where t_id = #{t_id}
+	        select * from screen where t_id = #{t_id} order by scr_id
 	</select>
 	
 </mapper>

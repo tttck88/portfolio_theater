@@ -33,7 +33,7 @@ public class MovieController {
 	@RequestMapping(value="/readMovie", method=RequestMethod.GET)
 	public void readMovie(@RequestParam("m_id") int m_id, Model model) throws Exception {
 		
-		logger.info("MovieList/readMovie");
+//		logger.info("MovieList/readMovie");
 		
 		model.addAttribute(service.readMovie(m_id));
 	}
@@ -41,13 +41,13 @@ public class MovieController {
 	@RequestMapping(value="/registerMovie", method=RequestMethod.GET)
 	public void registerMovieGET() {
 		
-		logger.info("MovieList/registerMovie");
+//		logger.info("MovieList/registerMovie");
 	}
 	
 	@RequestMapping(value="/registerMovie", method=RequestMethod.POST)
 	public String registerMoviePOST(MovieVO movieVO) throws Exception {
 		
-		logger.info("MovieList/registerMovie");
+//		logger.info("MovieList/registerMovie");
 		
 		service.registerMovie(movieVO);
 		
@@ -57,7 +57,7 @@ public class MovieController {
 	@RequestMapping(value="/modifyMovie", method=RequestMethod.GET)
 	public void modifyMovieGet(@RequestParam("m_id") int m_id, Model model) throws Exception {
 		
-		logger.info("MovieList/modifyMovie");
+//		logger.info("MovieList/modifyMovie");
 		
 		model.addAttribute(service.readMovie(m_id));
 	}
@@ -65,11 +65,11 @@ public class MovieController {
 	@RequestMapping(value="/modifyMovie", method=RequestMethod.POST)
 	public String modifyMoviePost(MovieVO movieVO) throws Exception {
 		
-		logger.info("MovieList/modifyMovie");
+//		logger.info("MovieList/modifyMovie");
 		
 		service.updateMovie(movieVO);
 		
-		System.out.println(movieVO);
+//		System.out.println(movieVO);
 		
 		return "redirect:/movie/movieList";
 	}
@@ -77,7 +77,7 @@ public class MovieController {
 	@RequestMapping(value="/removeMovie", method=RequestMethod.POST)
 	public String removeMovie(@RequestParam("m_id") int m_id) throws Exception {
 		
-		logger.info("MovieList/removeMovie");
+//		logger.info("MovieList/removeMovie");
 		
 		service.removeMovie(m_id);
 		

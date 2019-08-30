@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.spring.mapper.MovieMapper">
 	<select id="list" resultType="MovieVO">
-		select * from movie
+		select * from movie order by m_id
 	</select>
 	
 	<select id="readMovie" resultType="MovieVO">

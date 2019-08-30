@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.domain.MovieVO;
 import com.spring.domain.ScheduleVO;
+import com.spring.domain.ScreenVO;
 
 @Repository
 public class ScheduleDAO {
@@ -28,6 +29,12 @@ public class ScheduleDAO {
 
 	public ScheduleVO getOne(ScheduleVO svo) {
 		return sqlSession.selectOne(namespace+ ".getOne", svo);
+	}
+
+	public List<ScheduleVO> getSchList_mt(ScheduleVO svo) {
+		System.out.println("dao " + svo);
+		System.out.println("dao " + sqlSession.selectList(namespace+ ".getSchList_mt", svo));
+		return sqlSession.selectList(namespace+ ".getSchList_mt", svo);
 	}
 
 }

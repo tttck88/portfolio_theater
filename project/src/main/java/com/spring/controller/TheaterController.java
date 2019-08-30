@@ -27,7 +27,7 @@ public class TheaterController {
 	@RequestMapping(value = "/theaterList", method = RequestMethod.GET)
 	public void theaterList(Model model) throws Exception {
 		
-		 logger.info("Welcome 극장리스트!");
+//		 logger.info("Welcome 극장리스트!");
 		 
 		 model.addAttribute("list",service.getTheaterList());
 	}
@@ -35,7 +35,7 @@ public class TheaterController {
 	@RequestMapping(value = "/theaterOne", method = RequestMethod.GET)
 	public void getTheater(Model model, TheaterVO vo) throws Exception {
 		
-		 logger.info("Welcome 극장상세!");
+//		 logger.info("Welcome 극장상세!");
 		 
 		 model.addAttribute(service.getTheater(vo));
 	}
@@ -44,7 +44,7 @@ public class TheaterController {
 	@ResponseBody
 	public List<TheaterVO> theaterList_ajax() throws Exception {
 		
-		 logger.info("극장리스트!");
+//		 logger.info("극장리스트!");
 		 
 		 return service.getTheaterList();
 	}

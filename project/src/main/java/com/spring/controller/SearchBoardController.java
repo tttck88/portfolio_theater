@@ -4,6 +4,8 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.domain.BoardVO;
+import com.spring.domain.CustomUserDetails;
 import com.spring.domain.PageMaker;
 import com.spring.domain.SearchCriteria;
 import com.spring.service.BoardService;
@@ -29,14 +32,22 @@ public class SearchBoardController {
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public void registerGET() throws Exception {
 
-	  logger.info("register get ...........");
+//	  logger.info("register get ...........");
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String registerPOST(BoardVO board, RedirectAttributes rttr) throws Exception {
 		
-	 logger.info("insertBoard post ...........");
-	 logger.info(board.toString());
+//	 logger.info("insertBoard post ...........");
+//	 logger.info(board.toString());
+	 
+	 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//	 System.out.println("-----------auth -----" + auth.getName());
+	 String username = auth.getName();
+		/* CustomUserDetails user = (CustomUserDetails) auth.getPrincipal(); */
+	board.setId(username);
+	
+//	System.out.println("board " +board);
 	  
 	 service.insertBoard(board);
 	  
@@ -57,13 +68,31 @@ public class SearchBoardController {
 	
 	  model.addAttribute(service.readBoard(b_id));
 	  
+	  model.addAttribute("list", service.listSearchCriteria(cri));
+	  PageMaker pageMaker = new PageMaker();
+	  pageMaker.setCri(cri);
+//	  pageMaker.setTotalCount(131);
+
+	  pageMaker.setTotalCount(service.listSearchCount(cri));
+
+	  model.addAttribute("pageMaker", pageMaker);
+	  
 	  return "/sboard/readPage";
 	}
 	
 	@RequestMapping(value = "/readPage_main", method = RequestMethod.GET)
-	public String read(@RequestParam("b_id") int b_id, Model model)throws Exception {
+	public String read_main(@RequestParam("b_id") int b_id, @ModelAttribute("cri") SearchCriteria cri, Model model)throws Exception {
 	
 	  model.addAttribute(service.readBoard(b_id));
+	  
+	  model.addAttribute("list", service.listSearchCriteria(cri));
+	  PageMaker pageMaker = new PageMaker();
+	  pageMaker.setCri(cri);
+//	  pageMaker.setTotalCount(131);
+
+	  pageMaker.setTotalCount(service.listSearchCount(cri));
+
+	  model.addAttribute("pageMaker", pageMaker);
 	  
 	  return "/sboard/readPage";
 	}
@@ -120,7 +149,8 @@ public class SearchBoardController {
 	@RequestMapping(value = "/modifyPage", method = RequestMethod.POST)
 	public String modifyPagingPOST(BoardVO board, SearchCriteria cri, RedirectAttributes rttr) throws Exception {
 
-	  logger.info("mod post............");
+//	  logger.info("mod post............");
+//	  System.out.println(board);
 	  service.updateBoard(board);
 	  
 	  rttr.addAttribute("page", cri.getPage());
@@ -143,7 +173,7 @@ public class SearchBoardController {
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public void listPage(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
-	  logger.info(cri.toString());
+//	  logger.info(cri.toString());
 
 	  model.addAttribute("list", service.listSearchCriteria(cri));
 	  PageMaker pageMaker = new PageMaker();

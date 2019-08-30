@@ -1,13 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %><%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
 <%@ page import="org.springframework.security.core.Authentication" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-	// °æ·Î /biz ºÎÅÍ ½ÃÀÛ  [http://localhost:8080/biz/ @@.do ¿äÃ» ÇÏ±â À§ÇØ]
+	// ê²½ë¡œ /biz ë¶€í„° ì‹œì‘  [http://localhost:8080/biz/ @@.do ìš”ì²­ í•˜ê¸° ìœ„í•´]
 	String contextPath = request.getContextPath();
-	// theme ±îÁö µé¾î¿Â °æ·Î 
+	// theme ê¹Œì§€ ë“¤ì–´ì˜¨ ê²½ë¡œ 
 	String KPath = contextPath + "/resources";
 	
 	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -21,20 +21,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>í˜„ì¬ìƒì˜ì‘ - íƒíƒê·¹ì¥</title>
 <!-- Bootstrap core CSS -->
-<link href="<%=KPath%>/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<%-- <link href="<%=KPath%>/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> --%>
 <!-- Custom styles for this template -->
 <link href="<%=KPath%>/css/small-business.css" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <style>
 	 body {background-color: #e9e7e8;}
+	 
+.btn-primary {
+	color: #fff;
+	background-color: #e50914;
+	border-color: #e50914
+}
+
+.btn-primary:hover {
+	color: #fff;
+	background-color: #f40612;
+	border-color: #f40612
+}
+
+.btn-primary.focus, .btn-primary:focus {
+	box-shadow: 0 0 0 .2rem rgba(38, 143, 255, .5)
+}
+
+#bigDiv {
+box-shadow: 0 0 5px rgba(0,0,0,.2);
+}
 </style>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/main/header.jsp"%>
-<div class="container" style="background-color: white;padding-top: 20px;margin-top: 40px;margin-bottom: 40px;padding-bottom: 20px;">
+<div class="container" style="background-color: white;padding-top: 20px;margin-top: 40px;margin-bottom: 40px;padding-bottom: 20px;" id="bigDiv">
     <!-- Page Features -->
     <div class="row text-center">
 	<c:forEach var="movieVO" items="${list}">
@@ -43,11 +66,24 @@
           <img class="card-img-top" src="/resources/movieimg/${movieVO.poster }" alt="">
           <div class="card-body">
             <h4 class="card-title">${movieVO.title}</h4>
-            <p class="card-text">°¨µ¶ : ${movieVO.director}</p>
+            <p class="card-text">ê°ë… : ${movieVO.director}</p>
           </div>
           <div class="card-footer">
-            <a href="/movie/readMovie?m_id=${movieVO.m_id}" class="btn btn-primary">»ó¼¼º¸±â</a>
-            <a href="/ticket/ticketByMovie?m_id=${movieVO.m_id}" class="btn btn-primary">¿¹¸ÅÇÏ±â</a>
+            <a href="/movie/readMovie?m_id=${movieVO.m_id}" class="btn btn-primary">ìƒì„¸ë³´ê¸°</a>
+            <a href="/ticket/ticketByMovie?m_id=${movieVO.m_id}" class="btn btn-primary">ì˜ˆë§¤í•˜ê¸°</a>
+          </div>
+        </div>
+      </div>
+<%--       <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card h-100">
+          <img class="card-img-top" src="/resources/movieimg/${movieVO.poster }" alt="">
+          <div class="card-body">
+            <h4 class="card-title">${movieVO.title}</h4>
+            <p class="card-text">ê°ë… : ${movieVO.director}</p>
+          </div>
+          <div class="card-footer">
+            <a href="/movie/readMovie?m_id=${movieVO.m_id}" class="btn btn-primary">ìƒì„¸ë³´ê¸°</a>
+            <a href="/ticket/ticketByMovie?m_id=${movieVO.m_id}" class="btn btn-primary">ì˜ˆë§¤í•˜ê¸°</a>
           </div>
         </div>
       </div>
@@ -56,33 +92,20 @@
           <img class="card-img-top" src="/resources/movieimg/${movieVO.poster }" alt="">
           <div class="card-body">
             <h4 class="card-title">${movieVO.title}</h4>
-            <p class="card-text">°¨µ¶ : ${movieVO.director}</p>
+            <p class="card-text">ê°ë… : ${movieVO.director}</p>
           </div>
           <div class="card-footer">
-            <a href="/movie/readMovie?m_id=${movieVO.m_id}" class="btn btn-primary">»ó¼¼º¸±â</a>
-            <a href="/ticket/ticketByMovie?m_id=${movieVO.m_id}" class="btn btn-primary">¿¹¸ÅÇÏ±â</a>
+            <a href="/movie/readMovie?m_id=${movieVO.m_id}" class="btn btn-primary">ìƒì„¸ë³´ê¸°</a>
+            <a href="/ticket/ticketByMovie?m_id=${movieVO.m_id}" class="btn btn-primary">ì˜ˆë§¤í•˜ê¸°</a>
           </div>
         </div>
-      </div>
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card h-100">
-          <img class="card-img-top" src="/resources/movieimg/${movieVO.poster }" alt="">
-          <div class="card-body">
-            <h4 class="card-title">${movieVO.title}</h4>
-            <p class="card-text">°¨µ¶ : ${movieVO.director}</p>
-          </div>
-          <div class="card-footer">
-            <a href="/movie/readMovie?m_id=${movieVO.m_id}" class="btn btn-primary">»ó¼¼º¸±â</a>
-            <a href="/ticket/ticketByMovie?m_id=${movieVO.m_id}" class="btn btn-primary">¿¹¸ÅÇÏ±â</a>
-          </div>
-        </div>
-      </div>
+      </div> --%>
 	</c:forEach>
     </div>
     <!-- /.row -->
 </div>
 <!-- /.container -->
-<button id="register">¿µÈ­µî·Ï</button>
+<!-- <button id="register">ì˜í™”ë“±ë¡</button> -->
 	<script>
 		$(document).ready(
 			function() {

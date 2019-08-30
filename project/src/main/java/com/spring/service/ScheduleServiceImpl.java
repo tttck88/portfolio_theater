@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.spring.dao.ScheduleDAO;
 import com.spring.domain.MovieVO;
 import com.spring.domain.ScheduleVO;
+import com.spring.domain.ScreenVO;
 
 @Service("scheduleService")
 public class ScheduleServiceImpl implements ScheduleService {
@@ -30,6 +31,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 	@Override
 	public ScheduleVO getOne(ScheduleVO svo) throws Exception {
 		return dao.getOne(svo);
+	}
+
+	@Override
+	public List<ScheduleVO> getSchList_mt(ScheduleVO svo) {
+		System.out.println("service " + svo);
+		return dao.getSchList_mt(svo);
 	}
 	
 }

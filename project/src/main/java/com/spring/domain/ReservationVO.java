@@ -3,7 +3,7 @@ package com.spring.domain;
 public class ReservationVO {
 	private String r_id, username, nu_id, seat_row, seat_col, p_id;
 	private String r_date;
-	private int sch_id;
+	private int sch_id,row_num;
 	
 	public String getR_id() {
 		return r_id;
@@ -53,7 +53,12 @@ public class ReservationVO {
 	public void setR_date(String r_date) {
 		this.r_date = r_date;
 	}
-	
+	public int getRow_num() {
+		return row_num;
+	}
+	public void setRow_num(int row_num) {
+		this.row_num = row_num;
+	}
 	@Override
 	public String toString() {
 		return "ReservationVO [r_id=" + r_id + ", username=" + username + ", nu_id=" + nu_id + ", sch_id=" + sch_id

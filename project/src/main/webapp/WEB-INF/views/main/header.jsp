@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 	<!-- Navigation -->
 <style>
 nav {
@@ -21,6 +21,9 @@ nav {
   background-color: #2d2c2c;
   border-color: #fff;
 }
+.bg-dark {
+    background-color: #000000!important;
+}
 </style>
 <script>
 $.getJSON("/theater/theaterList_ajax", function(data) {
@@ -39,35 +42,32 @@ $.getJSON("/theater/theaterList_ajax", function(data) {
 </script>
 <div class="container">
 <nav class="navbar navbar-expand-xl navbar-dark fixed-top">
-    <a class="navbar-brand" href="/main/main">ÅÃÅÃ±ØÀå</a>
+    <a class="navbar-brand" href="/main/main" style="color:#e50914">íƒíƒê·¹ì¥</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a href='#' class="nav-link">ÅÃÅÃ</a>
+          <a href='/main/profile' class="nav-link">í•œì •íƒì…ë‹ˆë‹¤</a>
         </li>
         
 		<li class="nav-item dropdown">
 		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		  	±ØÀå
+		  	ê·¹ì¥
 		</a>
 		<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 				<span id="theaterList_drop"></span>
 		</div>
 		</li>
         <li class="nav-item">
-          <a href='/movie/movieList' class="nav-link">ÇöÀç»ó¿µÀÛ</a>
+          <a href='/movie/movieList' class="nav-link">í˜„ì¬ìƒì˜ì‘</a>
         </li>
         <li class="nav-item">
-          <a href='/ticket/ticket' class="nav-link">¿µÈ­¿¹¸Å</a>
+          <a href='/ticket/ticket' class="nav-link">ì˜í™”ì˜ˆë§¤</a>
         </li>
         <li class="nav-item">
-          <a href='/sboard/list' class="nav-link">°øÁö»çÇ×</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link">¹®ÀÇ°Ô½ÃÆÇ</a>
+          <a href='/sboard/list' class="nav-link">ì†Œí†µì°½êµ¬</a>
         </li>
       </ul>
     </div>
@@ -76,13 +76,13 @@ $.getJSON("/theater/theaterList_ajax", function(data) {
         <li class="nav-item active">
           <sec:authorize access="isAnonymous()">
         <li class="nav-item">
-          <a href='/loginform' class="nav-link">·Î±×ÀÎ</a>
+          <a href='/loginform' class="nav-link">ë¡œê·¸ì¸</a>
         </li>
         </sec:authorize>
         <sec:authorize access="isAuthenticated()">
         <li class="nav-item">
 		<div>
-			<a href="#" onclick="document.getElementById('logout-form').submit();"  class="nav-link">·Î±×¾Æ¿ô</a>
+			<a href="#" onclick="document.getElementById('logout-form').submit();"  class="nav-link">ë¡œê·¸ì•„ì›ƒ</a>
 			<form id="logout-form" action='<c:url value='/logout'/>' method="POST">
 			   <input name="${_csrf.parameterName}" type="hidden" value="${_csrf.token}"/>
 			</form>
@@ -91,17 +91,17 @@ $.getJSON("/theater/theaterList_ajax", function(data) {
 		</sec:authorize>
 		<sec:authorize access="isAnonymous()">
 		<li class="nav-item">
-			<div><a href="/user/register2" class="nav-link">È¸¿ø°¡ÀÔ</a></div>
+			<div><a href="/user/register2" class="nav-link">íšŒì›ê°€ì…</a></div>
 		</li>
 		</sec:authorize>
 		<sec:authorize access="isAuthenticated()">
 		<li class="nav-item">
-			<div><a href="/myPage/myPage" class="nav-link">¸¶ÀÌÆäÀÌÁö</a></div>
+			<div><a href="/myPage/myPage" class="nav-link">ì˜ˆë§¤í˜„í™©</a></div>
 		</li>
 		</sec:authorize>
 		<sec:authorize access="hasRole('ROLE_ADMIN')">
         <li class="nav-item">
-          <a href='/admin' class="nav-link">°ü¸®ÀÚ</a>
+          <a href='/admin' class="nav-link">ê´€ë¦¬ì</a>
         </li>
         </sec:authorize>
         </ul>

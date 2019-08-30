@@ -1,5 +1,6 @@
 package com.spring.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -47,8 +48,13 @@ public class ReplyServiceImpl implements ReplyService {
 		System.out.println("removeReply");
 		
 		int b_id = dao.getB_id(r_id);
+		List<ReplyVO> replyList = new ArrayList();
+		replyList = dao.listReplyCnt(r_id);
+		int size = replyList.size();
 		dao.delete(r_id);
-		boardDAO.updateReplyCnt(b_id, -1);
+		System.out.println("sizesizesize" + size);
+		dao.listReply(r_id);
+		boardDAO.updateReplyCnt(b_id, -size);
 	}
 
 	@Override
@@ -61,6 +67,25 @@ public class ReplyServiceImpl implements ReplyService {
 	public int count(Integer b_id) throws Exception {
 		
 		return dao.count(b_id);
+	}
+
+	@Override
+	public ReplyVO selectOne(int r_id) throws Exception {
+		System.out.println("service" + dao.selectOne(r_id));
+		return dao.selectOne(r_id);
+	}
+
+	@Override
+	public void addReplyReply(ReplyVO vo) throws Exception {
+		dao.replyAdd(vo);
+		boardDAO.updateReplyCnt(vo.getB_id(), 1);
+		
+	}
+
+	@Override
+	public List<ReplyVO> listReplyReply(Integer originId) {
+		System.out.println("ser " + originId);
+		return dao.listReply(originId);
 	}
 
 }

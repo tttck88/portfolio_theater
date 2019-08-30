@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.spring.domain.CustomUserDetails;
 import com.spring.domain.UserVO;
 
 @Repository
@@ -20,7 +21,11 @@ public class UserDAO {
 		return sqlSession.selectOne(namespace+ ".loadUserByUserId", u_id);
 	}
 
-	public UserVO getUser(String userName) {
+	public CustomUserDetails getUser(String userName) {
 		return sqlSession.selectOne(namespace+ ".getUser", userName);
+	}
+
+	public void setPw(CustomUserDetails userVO) {
+		sqlSession.update(namespace+ ".setPw", userVO);
 	}
 }
